@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special Foods - Home</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .hero-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            text-align: center;
+            color: white;
+        }
+        
+        .logo-large {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        h1 {
+            font-size: 48px;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .tagline {
+            font-size: 24px;
+            margin-bottom: 10px;
+            opacity: 0.95;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            margin-bottom: 50px;
+            opacity: 0.85;
+            max-width: 600px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 18px 50px;
+            background-color: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        
+        .features {
+            display: flex;
+            gap: 40px;
+            margin-top: 60px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 900px;
+        }
+        
+        .feature {
+            flex: 1;
+            min-width: 200px;
+            max-width: 250px;
+            background: rgba(255,255,255,0.1);
+            padding: 30px 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.2);
+            transition: transform 0.3s;
+        }
+        
+        .feature:hover {
+            transform: translateY(-10px);
+            background: rgba(255,255,255,0.15);
+        }
+        
+        .feature-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+        
+        .feature-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .feature-description {
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+        
+        .alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-size: 14px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            animation: slideIn 0.5s ease-out;
+            z-index: 1000;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: white;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+    
+    <div class="hero-section">
+        <div class="logo-large">🌿</div>
+        <h1>Special Foods</h1>
+        <p class="tagline">Health-Conscious Products Platform</p>
+        <p class="subtitle">
+            Discover eco-artisan products from FarCoop and Artisan Products Provider. 
+            Fresh, ecological, and authentic products from around the world.
+        </p>
+        
+        <a href="/login" class="cta-button">Get Started →</a>
+        
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">🌾</div>
+                <div class="feature-title">FarCoop Products</div>
+                <div class="feature-description">
+                    Fresh ecological products directly from local farms
+                </div>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">🏺</div>
+                <div class="feature-title">Artisan Goods</div>
+                <div class="feature-description">
+                    Handcrafted products from small family-run businesses
+                </div>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">🌍</div>
+                <div class="feature-title">Global Origins</div>
+                <div class="feature-description">
+                    Products from all over the world, delivered to your door
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2025 Special Foods - Connecting health-conscious buyers with quality producers</p>
+    </footer>
+</body>
+</html>

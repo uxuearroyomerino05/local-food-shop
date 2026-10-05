@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special Foods - Products</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .btn-logout {
+            padding: 8px 20px;
+            background-color: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-logout:hover {
+            background-color: rgba(255,255,255,0.3);
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .search-section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .search-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .search-form {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: end;
+        }
+        
+        .form-group {
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        select, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        select:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn-search, .btn-clear {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .btn-search {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-clear {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .btn-search:hover, .btn-clear:hover {
+            transform: translateY(-2px);
+        }
+        
+        .alert {
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        
+        .alert-error {
+            background-color: #fee;
+            color: #c33;
+            border: 1px solid #fcc;
+        }
+        
+        .alert-success {
+            background-color: #efe;
+            color: #3c3;
+            border: 1px solid #cfc;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .product-header {
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .product-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .product-id {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .company-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+        
+        .product-details {
+            margin-bottom: 15px;
+            flex: 1;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .detail-label {
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .detail-value {
+            color: #333;
+            text-align: right;
+        }
+        
+        .product-description {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 15px;
+            line-height: 1.4;
+            max-height: 60px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+        
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .price {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stock-info {
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .stock-available {
+            color: #28a745;
+        }
+        
+        .stock-low {
+            color: #ffc107;
+        }
+        
+        .stock-out {
+            color: #dc3545;
+        }
+        
+        .btn-view {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-top: 10px;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+        }
+        
+        .btn-view:hover {
+            transform: translateY(-2px);
+        }
+        
+        .no-products {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 10px;
+            color: #666;
+        }
+        
+        .no-products h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>🌿 Special Foods - Products</h1>
+            <div class="user-info">
+                <span>Welcome, <strong th:text="${username}">User</strong></span>
+                <form th:action="@{/logout}" method="post" style="display: inline;">
+                    <button type="submit" class="btn-logout">Logout</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+        
+        <div class="search-section">
+            <div class="search-title">🔍 Search & Filter Products</div>
+            <form th:action="@{/products}" method="get" class="search-form">
+                <div class="form-group">
+                    <label for="company">Company</label>
+                    <select id="company" name="company" th:value="${company}">
+                        <option value="">All Companies</option>
+                        <option value="FarCoop" th:selected="${company == 'FarCoop'}">FarCoop</option>
+                        <option value="APP" th:selected="${company == 'APP'}">APP</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="searchType">Search By</label>
+                    <select id="searchType" name="searchType" th:value="${searchType}">
+                        <option value="">None (No Filter)</option>
+                        <option value="name" th:selected="${searchType == 'name'}">Product Name</option>
+                        <option value="description" th:selected="${searchType == 'description'}">Description</option>
+                        <option value="producer" th:selected="${searchType == 'producer'}">Producer Name</option>
+                        <option value="origin" th:selected="${searchType == 'origin'}">Producer Origin</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" style="flex: 2;">
+                    <label for="searchValue">Search Term</label>
+                    <input type="text" id="searchValue" name="searchValue" 
+                           th:value="${searchValue}" placeholder="Enter search term...">
+                </div>
+                
+                <button type="submit" class="btn-search">Search</button>
+                <a th:href="@{/products}" class="btn-clear" style="text-decoration: none; padding: 10px 25px; display: inline-block;">Clear All</a>
+            </form>
+        </div>
+        
+        <div th:if="${products != null and !products.isEmpty()}" class="products-grid">
+            <div th:each="product : ${products}" class="product-card">
+                <div class="product-header">
+                    <div class="product-name" th:text="${product.name}">Product Name</div>
+                    <div class="product-id" th:text="'ID: ' + ${product.id}">ID: 1</div>
+                    <span class="company-badge" th:text="${product.company}">Company</span>
+                </div>
+                
+                <div class="product-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Producer:</span>
+                        <span class="detail-value" th:text="${product.producerName}">Producer</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Origin:</span>
+                        <span class="detail-value" th:text="${product.producerOrigin}">Origin</span>
+                    </div>
+                </div>
+                
+                <div class="product-description" th:text="${product.description}">
+                    Product description goes here...
+                </div>
+                
+                <div class="product-footer">
+                    <div class="price" th:text="'€' + ${#numbers.formatDecimal(product.price, 1, 2)}">€0.00</div>
+                    <div class="stock-info"
+                         th:classappend="${product.availableQuantity == 0} ? 'stock-out' : (${product.availableQuantity < 10} ? 'stock-low' : 'stock-available')">
+                        <span th:if="${product.availableQuantity > 0}" 
+                              th:text="${product.availableQuantity} + ' units'">X units</span>
+                        <span th:if="${product.availableQuantity == 0}">OUT OF STOCK</span>
+                    </div>
+                </div>
+                
+                <a th:href="@{/product/{id}(id=${product.id})}" class="btn-view">
+                    View Details →
+                </a>
+            </div>
+        </div>
+        
+        <div th:if="${products == null or products.isEmpty()}" class="no-products">
+            <h2>No products found</h2>
+            <p>Try adjusting your search criteria or check back later.</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,40 @@
+plugins {
+	id 'java'
+	id 'application'
+	id 'org.springframework.boot' version '3.5.9'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'client'
+version = '1.0'
+
+repositories {
+	mavenCentral()
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+dependencies {
+	// Spring Boot Starter Web for building web applications
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+}
+
+// Task to run the console client
+task runConsoleClient(type: JavaExec) {
+    group = 'application'
+    description = 'Run the Console Client'
+    mainClass = 'client.console.ConsoleClient'
+    classpath = sourceSets.main.runtimeClasspath
+
+    systemProperty "API_BASE_URL", "http://localhost:8082"
+}
+
+// Spring Boot configuration, defaults to running the web client
+bootRun {
+    mainClass.set("client.web.WebClientApplication")
+}

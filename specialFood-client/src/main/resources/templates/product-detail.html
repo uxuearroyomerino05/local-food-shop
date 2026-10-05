@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${product.name()} + ' - Special Foods'">Product Detail</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .btn-logout {
+            padding: 8px 20px;
+            background-color: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-logout:hover {
+            background-color: rgba(255,255,255,0.3);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+        
+        .back-link:hover {
+            transform: translateX(-5px);
+        }
+        
+        .alert {
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        
+        .alert-error {
+            background-color: #fee;
+            color: #c33;
+            border: 1px solid #fcc;
+        }
+        
+        .alert-success {
+            background-color: #efe;
+            color: #3c3;
+            border: 1px solid #cfc;
+        }
+        
+        .product-detail {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .product-header {
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .product-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .product-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .company-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .product-id {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 15px;
+        }
+        
+        .product-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .product-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .product-info {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .info-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .info-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .description-text {
+            color: #555;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+        
+        .detail-grid {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: #666;
+        }
+        
+        .detail-value {
+            color: #333;
+            text-align: right;
+        }
+        
+        .purchase-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .price-section {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        .price-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+        
+        .price {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .stock-badge {
+            display: inline-block;
+            padding: 6px 15px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 15px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .stock-available {
+            background: rgba(40, 167, 69, 0.3);
+        }
+        
+        .stock-low {
+            background: rgba(255, 193, 7, 0.3);
+        }
+        
+        .stock-out {
+            background: rgba(220, 53, 69, 0.3);
+        }
+        
+        .purchase-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        label {
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+        
+        .quantity-input {
+            padding: 12px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 5px;
+            font-size: 16px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .quantity-input:focus {
+            outline: none;
+            border-color: rgba(255,255,255,0.6);
+            background: rgba(255,255,255,0.15);
+        }
+        
+        .quantity-input::placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+        
+        .btn-buy {
+            padding: 15px;
+            background: white;
+            color: #667eea;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .btn-buy:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn-buy:disabled {
+            background: #ccc;
+            color: #666;
+            cursor: not-allowed;
+        }
+        
+        .total-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid rgba(255,255,255,0.3);
+            text-align: center;
+        }
+        
+        .total-label {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+        
+        .total-price {
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .icon {
+            font-size: 20px;
+        }
+    </style>
+    <script>
+        function updateTotal() {
+            const price = parseFloat(document.getElementById('productPrice').value);
+            const quantity = parseInt(document.getElementById('quantity').value) || 0;
+            const total = price * quantity;
+            document.getElementById('totalPrice').textContent = '€' + total.toFixed(2);
+        }
+    </script>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>🌿 Special Foods</h1>
+            <div class="user-info">
+                <span>Welcome, <strong th:text="${username}">User</strong></span>
+                <form th:action="@{/logout}" method="post" style="display: inline;">
+                    <button type="submit" class="btn-logout">Logout</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <a href="/products" class="back-link">← Back to Products</a>
+        
+        <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+        
+        <div class="product-detail">
+            <div class="product-header">
+                <div class="product-title-row">
+                    <div>
+                        <div class="product-title" th:text="${product.name}">Product Name</div>
+                        <div class="product-id" th:text="'Product ID: ' + ${product.id}">ID: 1</div>
+                    </div>
+                    <span class="company-badge" th:text="${product.company}">Company</span>
+                </div>
+            </div>
+            
+            <div class="product-content">
+                <div class="product-info">
+                    <div class="info-section">
+                        <div class="info-title">
+                            <span class="icon">📝</span>
+                            Description
+                        </div>
+                        <p class="description-text" th:text="${product.description}">
+                            Product description goes here...
+                        </p>
+                    </div>
+                    
+                    <div class="info-section">
+                        <div class="info-title">
+                            <span class="icon">ℹ️</span>
+                            Product Details
+                        </div>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <span class="detail-label">Producer Name</span>
+                                <span class="detail-value" th:text="${product.producerName}">Producer</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Origin</span>
+                                <span class="detail-value" th:text="${product.producerOrigin}">Origin</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Company</span>
+                                <span class="detail-value" th:text="${product.company}">Company</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Product ID</span>
+                                <span class="detail-value" th:text="${product.id}">ID</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="purchase-card">
+                    <div class="price-section">
+                        <div class="price-label">Price per unit</div>
+                        <div class="price" th:text="'€' + ${#numbers.formatDecimal(product.price, 1, 2)}">€0.00</div>
+                        <span class="stock-badge"
+                              th:classappend="${product.availableQuantity == 0} ? 'stock-out' : (${product.availableQuantity < 10} ? 'stock-low' : 'stock-available')">
+                            <span th:if="${product.availableQuantity > 0}" 
+                                  th:text="${product.availableQuantity} + ' units available'">X units</span>
+                            <span th:if="${product.availableQuantity == 0}">OUT OF STOCK</span>
+                        </span>
+                    </div>
+                    
+                    <form th:action="@{/product/buy}" method="post" class="purchase-form">
+                        <input type="hidden" name="productId" th:value="${product.id}">
+                        <input type="hidden" id="productPrice" th:value="${product.price}">
+                        
+                        <div class="form-group">
+                            <label for="quantity">Quantity</label>
+                            <input type="number" 
+                                   id="quantity"
+                                   name="quantity" 
+                                   class="quantity-input" 
+                                   min="1" 
+                                   th:max="${product.availableQuantity}" 
+                                   value="1" 
+                                   required
+                                   th:disabled="${product.availableQuantity == 0}"
+                                   oninput="updateTotal()"
+                                   placeholder="Enter quantity">
+                        </div>
+                        
+                        <button type="submit" 
+                                class="btn-buy" 
+                                th:disabled="${product.availableQuantity == 0}">
+                            <span th:if="${product.availableQuantity > 0}">🛒 Buy Now</span>
+                            <span th:if="${product.availableQuantity == 0}">Unavailable</span>
+                        </button>
+                        
+                        <div class="total-section" th:if="${product.availableQuantity > 0}">
+                            <div class="total-label">Total Price</div>
+                            <div class="total-price" id="totalPrice" 
+                                 th:text="'€' + ${#numbers.formatDecimal(product.price, 1, 2)}">€0.00</div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

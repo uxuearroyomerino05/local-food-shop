@@ -1,0 +1,52 @@
+plugins {
+    id 'java' 
+    id 'application' 
+}
+
+group = 'app'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+tasks.compileJava {
+    options.encoding = 'UTF-8'
+}
+
+application {
+    mainClass = 'app.APPSocketServer' 
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Jackson para JSON
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.16.1' 
+    // Logging
+    implementation 'org.slf4j:slf4j-api:2.0.12' 
+    runtimeOnly 'ch.qos.logback:logback-classic:1.4.14' 
+    // Testing
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+// Configuración para la tarea 'run' (cuando usas Gradle Tasks)
+run {
+    systemProperty "file.encoding", "UTF-8"
+    systemProperty "SERVER_PORT", "8085"
+    standardOutput = new PrintStream(System.out, true, "UTF-8")
+}
+
+// Configuración general para cualquier ejecución de Java desde Gradle
+tasks.withType(JavaExec) {
+    systemProperty "SERVER_PORT", "8085"
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
