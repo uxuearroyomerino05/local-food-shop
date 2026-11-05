@@ -189,9 +189,3 @@ El cliente está configurado para acceder a la aplicación principal mediante `h
 - Utiliza el Gradle Wrapper incluido para compilar y ejecutar cada módulo.
 - Cada módulo tiene su propio archivo `build.gradle` y configuración de dependencias.
 - Las versiones de Spring Boot varían entre módulos y deben mantenerse de acuerdo con sus respectivos archivos de configuración.
-
-## 9. Verified Environment
-
-The Java, Gradle, Spring Boot, and dependency versions listed above are based on the build configuration files included in the repository. The ports are based on the included application properties and Gradle configuration.
-
-They describe the supplied project configuration and should not be interpreted as a guarantee that every module has been tested together on a clean machine.
