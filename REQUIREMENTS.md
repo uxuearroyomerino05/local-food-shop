@@ -1,74 +1,84 @@
 # Requirements — Local Food Shop
 
-## 1. Programming Language
+[English](#english) | [Español](#español)
 
-- **Java:** 21
+<a id="english"></a>
+# English
 
-The Gradle build files specify a Java 21 toolchain across the main modules.
+## Development Environment
 
-A compatible JDK installation is required.
+| Tool | Version |
+|---|---|
+| Java JDK | 21 |
+| Gradle | 8.14.3 (included Gradle Wrapper) |
 
-## 2. Build System
+Each module includes its own Gradle Wrapper configuration.
 
-- **Build system:** Gradle
-- **Gradle wrapper version:** 8.14.3
-
-Each module contains its own Gradle build configuration and wrapper files.
-
-Using the included Gradle wrapper is recommended instead of relying on a separately installed Gradle version.
-
-## 3. Frameworks and Libraries
+## Frameworks and Libraries
 
 ### Main Application — `specialFood`
 
-- Spring Boot: 3.5.8
-- Spring Boot Web
-- Spring Data JPA
-- SpringDoc OpenAPI UI: 2.8.13
-- H2 Database
+| Dependency | Version |
+|---|---|
+| Spring Boot | 3.5.8 |
+| Spring Dependency Management | 1.1.6 |
+| Spring Web | Managed by Spring Boot |
+| Spring Data JPA | Managed by Spring Boot |
+| SpringDoc OpenAPI UI | 2.8.13 |
+| H2 Database | Managed by Spring Boot |
 
 ### Client Application — `specialFood-client`
 
-- Spring Boot: 3.5.9
-- Spring Boot Web
-- Spring Boot Thymeleaf
-
-The module includes a console client and a web client.
+| Dependency | Version |
+|---|---|
+| Spring Boot | 3.5.9 |
+| Spring Dependency Management | 1.1.7 |
+| Spring Web | Managed by Spring Boot |
+| Spring Boot Thymeleaf | Managed by Spring Boot |
 
 ### APP Provider — `app`
 
-- Java 21
-- Jackson Databind: 2.16.1
-- SLF4J API: 2.0.12
-- Logback Classic: 1.4.14
-- JUnit 5 for testing
+| Dependency | Version |
+|---|---|
+| Jackson Databind | 2.16.1 |
+| SLF4J API | 2.0.12 |
+| Logback Classic | 1.4.14 |
+| JUnit Jupiter | 5.9.1 |
 
-This module uses the Gradle `application` plugin and exposes a socket-based server.
+This module uses Java TCP sockets.
 
 ### FarCoop Provider — `farCoop`
 
-- Spring Boot: 3.5.7
-- Spring Boot Web
-- Spring Data JPA
-- SpringDoc OpenAPI UI: 2.8.13
-- H2 Database
+| Dependency | Version |
+|---|---|
+| Spring Boot | 3.5.7 |
+| Spring Dependency Management | 1.1.6 |
+| Spring Web | Managed by Spring Boot |
+| Spring Data JPA | Managed by Spring Boot |
+| SpringDoc OpenAPI UI | 2.8.13 |
+| H2 Database | Managed by Spring Boot |
 
-## 4. Database
+### Demo — `demo`
 
-The Spring Boot modules use H2 for persistence.
+| Dependency | Version |
+|---|---|
+| Spring Boot | 3.5.9 |
+| Spring Dependency Management | 1.1.7 |
+| Spring Boot Starter | Managed by Spring Boot |
+| Spring Boot Test | Managed by Spring Boot |
 
-The configuration files specify file-based database locations for the main application and FarCoop provider.
+## Database
 
-- Main application database: `./data/SFdb`
-- FarCoop database: `./data/farCoopdb`
+The main application and FarCoop provider use H2.
 
-The application properties configure schema generation through Hibernate.
+The configured database locations are:
 
-**Note:** Database initialization and schema-generation settings may reset or recreate data. Review the relevant `application.properties` files before using the project with data that must be preserved.
+- Main application: `./data/SFdb`
+- FarCoop provider: `./data/farCoopdb`
 
-## 5. Configured Ports
+Both modules configure Hibernate schema generation through `create-drop`.
 
-The included application configuration files specify the following ports:
+## Network Configuration
 
 | Component | Port | Communication |
 |---|---:|---|
@@ -76,74 +86,109 @@ The included application configuration files specify the following ports:
 | FarCoop provider (`farCoop`) | 8084 | HTTP / REST |
 | APP provider (`app`) | 8085 | TCP socket |
 
-The web client is configured to communicate with the main application at `http://localhost:8082`.
+The client is configured to access the main application through `http://localhost:8082`.
 
-Make sure these ports are available before starting the components.
+## Additional Notes
 
-## 6. Running the Application
+- Java 21 is required by the Gradle toolchain configuration.
+- Use the included Gradle Wrapper to build and run each module.
+- Each module has its own `build.gradle` file and dependency configuration.
+- The Spring Boot versions differ between modules and should be kept consistent with their respective build files.
 
-Each component is built separately. On Windows, the included Gradle wrapper can generally be invoked from the corresponding module directory.
+---
 
-### Main application
+<a id="español"></a>
+# Español
 
-From `specialFood/`:
+## Entorno de desarrollo
 
-```powershell
-.\gradlew.bat bootRun
-```
+| Herramienta | Versión |
+|---|---|
+| Java JDK | 21 |
+| Gradle | 8.14.3 (Gradle Wrapper incluido) |
 
-### FarCoop provider
+Cada módulo incluye su propia configuración de Gradle Wrapper.
 
-From `farCoop/`:
+## Frameworks y librerías
 
-```powershell
-.\gradlew.bat bootRun
-```
+### Aplicación principal — `specialFood`
 
-### APP provider
+| Dependencia | Versión |
+|---|---|
+| Spring Boot | 3.5.8 |
+| Spring Dependency Management | 1.1.6 |
+| Spring Web | Gestionada por Spring Boot |
+| Spring Data JPA | Gestionada por Spring Boot |
+| SpringDoc OpenAPI UI | 2.8.13 |
+| H2 Database | Gestionada por Spring Boot |
 
-From `app/`:
+### Aplicación cliente — `specialFood-client`
 
-```powershell
-.\gradlew.bat run
-```
+| Dependencia | Versión |
+|---|---|
+| Spring Boot | 3.5.9 |
+| Spring Dependency Management | 1.1.7 |
+| Spring Web | Gestionada por Spring Boot |
+| Spring Boot Thymeleaf | Gestionada por Spring Boot |
 
-### Web client
+### Proveedor APP — `app`
 
-From `specialFood-client/`:
+| Dependencia | Versión |
+|---|---|
+| Jackson Databind | 2.16.1 |
+| SLF4J API | 2.0.12 |
+| Logback Classic | 1.4.14 |
+| JUnit Jupiter | 5.9.1 |
 
-```powershell
-.\gradlew.bat bootRun
-```
+Este módulo utiliza sockets TCP de Java.
 
-### Console client
+### Proveedor FarCoop — `farCoop`
 
-From `specialFood-client/`:
+| Dependencia | Versión |
+|---|---|
+| Spring Boot | 3.5.7 |
+| Spring Dependency Management | 1.1.6 |
+| Spring Web | Gestionada por Spring Boot |
+| Spring Data JPA | Gestionada por Spring Boot |
+| SpringDoc OpenAPI UI | 2.8.13 |
+| H2 Database | Gestionada por Spring Boot |
 
-```powershell
-.\gradlew.bat runConsoleClient
-```
+### Demo — `demo`
 
-These commands follow the build configurations included in the project. The full system should be tested from a clean environment before publishing these instructions as verified execution steps.
+| Dependencia | Versión |
+|---|---|
+| Spring Boot | 3.5.9 |
+| Spring Dependency Management | 1.1.7 |
+| Spring Boot Starter | Gestionada por Spring Boot |
+| Spring Boot Test | Gestionada por Spring Boot |
 
-## 7. Startup Order
+## Base de datos
 
-The following order is a suggested starting point based on the configured component dependencies:
+La aplicación principal y el proveedor FarCoop utilizan H2.
 
-1. Start the APP provider.
-2. Start the FarCoop provider.
-3. Start the main application.
-4. Start the console or web client.
+Las ubicaciones configuradas para las bases de datos son:
 
-If a component fails to start, check its logs, configured ports, and connection settings.
+- Aplicación principal: `./data/SFdb`
+- Proveedor FarCoop: `./data/farCoopdb`
 
-## 8. Configuration Notes
+Ambos módulos configuran la generación del esquema de Hibernate mediante `create-drop`.
 
-- Each component has its own Gradle build file.
-- Spring Boot versions differ between modules; retain the module-specific versions unless you deliberately update and test the project.
-- Database paths are relative to the working directory.
-- The APP provider uses TCP sockets, while the main application and FarCoop expose HTTP endpoints.
-- Some application settings may need to be adjusted when running the components on different machines.
+## Configuración de red
+
+| Componente | Puerto | Comunicación |
+|---|---:|---|
+| Aplicación principal (`specialFood`) | 8082 | HTTP / REST |
+| Proveedor FarCoop (`farCoop`) | 8084 | HTTP / REST |
+| Proveedor APP (`app`) | 8085 | Socket TCP |
+
+El cliente está configurado para acceder a la aplicación principal mediante `http://localhost:8082`.
+
+## Notas adicionales
+
+- Java 21 es necesario según la configuración del toolchain de Gradle.
+- Utiliza el Gradle Wrapper incluido para compilar y ejecutar cada módulo.
+- Cada módulo tiene su propio archivo `build.gradle` y configuración de dependencias.
+- Las versiones de Spring Boot varían entre módulos y deben mantenerse de acuerdo con sus respectivos archivos de configuración.
 
 ## 9. Verified Environment
 
